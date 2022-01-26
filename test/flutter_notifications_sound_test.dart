@@ -32,6 +32,12 @@ void main() {
 
     await FlutterRingtonePlayer.stop();
   });
+
+  test('modifyAlarmVolume', () async {
+    _initializeFakeRingtoneChannel(channelName, 'modifyAlarmVolume');
+
+    await FlutterRingtonePlayer.modifyAlarmVolume(volume: 0.1);
+  });
 }
 
 void _initializeFakeRingtoneChannel(String channelName, String expectedMethod) {

@@ -86,4 +86,17 @@ class FlutterRingtonePlayer {
       _channel.invokeMethod('stop');
     } on PlatformException {}
   }
+
+  ///
+  ///
+  ///
+  ///
+  static Future<void> modifyAlarmVolume({required double volume}) async {
+    try {
+      var args = <String, dynamic>{
+        'volume': volume,
+      };
+      _channel.invokeMethod('modifyAlarmVolume', args);
+    } on PlatformException {}
+  }
 }
