@@ -85,6 +85,11 @@ public class FlutterRingtonePlayerPlugin implements MethodCallHandler, FlutterPl
                 }
 
                 result.success(null);
+            }else if(call.method.equals("modifyAlarmVolumne")){
+                AudioManager mobilemode = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+                final double volume = call.argument("volume");
+                mobilemode.setStreamVolume(AudioManager.STREAM_ALARM,mobilemode.getStreamMaxVolume(AudioManager.STREAM_ALARM) * volume,0);
+                result.success(null);            
             }
 
             if (ringtoneUri != null) {
