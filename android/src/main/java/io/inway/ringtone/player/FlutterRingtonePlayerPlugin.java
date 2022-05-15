@@ -61,23 +61,28 @@ public class FlutterRingtonePlayerPlugin implements MethodCallHandler, FlutterPl
         try {
             Uri ringtoneUri = null;
 
-            if (call.method.equals("play") && !call.hasArgument("android")) {
-                result.notImplemented();
-            } else if (call.method.equals("play")) {
-                final int kind = call.argument("android");
+            if (call.method.equals("play")) {
+                if (call.hasArgument("uri")) {
+                    String uri = call.argument("uri");
+                    ringtoneUri = Uri.parse(uri);
+                }
 
-                switch (kind) {
-                    case 1:
-                        ringtoneUri = ringtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM);
-                        break;
-                    case 2:
-                        ringtoneUri = ringtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_NOTIFICATION);
-                        break;
-                    case 3:
-                        ringtoneUri = ringtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE);
-                        break;
-                    default:
-                        result.notImplemented();
+                // The androidSound overrides fromAsset if exists
+                if (call.hasArgument("android")) {
+                    int pref = call.argument("android");
+                    switch (pref) {
+                        case 1:
+                            ringtoneUri = ringtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM);
+                            break;
+                        case 2:
+                            ringtoneUri = ringtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_NOTIFICATION);
+                            break;
+                        case 3:
+                            ringtoneUri = ringtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE);
+                            break;
+                        default:
+                            result.notImplemented();
+                    }
                 }
             } else if (call.method.equals("stop")) {
                 if (ringtone != null) {
