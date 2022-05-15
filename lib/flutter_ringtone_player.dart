@@ -34,15 +34,19 @@ class FlutterRingtonePlayer {
   ///  * [IosSounds]
   static Future<void> play(
       {AndroidSound? android,
-        IosSound? ios,
-        String? fromAsset,
-        double? volume,
-        bool? looping,
-        bool? asAlarm}) async {
-    if (fromAsset == null && android == null && ios == null) {
+      IosSound? ios,
+      String? fromAsset,
+      String? fromUri,
+      double? volume,
+      bool? looping,
+      bool? asAlarm}) async {
+    if (fromAsset == null &&
+        android == null &&
+        ios == null &&
+        fromUri == null) {
       throw "Please specify the sound source.";
     }
-    if (fromAsset == null) {
+    if (fromAsset == null && fromUri == null) {
       if (android == null) {
         throw "Please specify android sound.";
       }
@@ -50,7 +54,7 @@ class FlutterRingtonePlayer {
         throw "Please specify ios sound.";
       }
     } else {
-      fromAsset = await _generateAssetUri(fromAsset);
+      fromAsset = fromUri ?? await _generateAssetUri(fromAsset!);
     }
     try {
       var args = <String, dynamic>{};
